@@ -110,8 +110,8 @@ Matrix transpose_matrix(Matrix a)
 Matrix by_matrix(Matrix a, int i, int j)
 {
     Matrix c = create_matrix(a.rows - 1, a.cols - 1);
-    int row,col;
-    row=col=0;
+    int row, col;
+    row = col = 0;
     for (int m = 0; m < a.rows - 1; m++)
     {
         row = (m < i ? m : m + 1);
@@ -142,9 +142,10 @@ double det_matrix(Matrix a)
     }
     else
     {
-        double det=0;
-        for(int i=0;i<a.rows;i++){
-            det+=a.data[0][i]*det_matrix(by_matrix(a,0,i))*(i%2?-1:1);
+        double det = 0;
+        for (int i = 0; i < a.rows; i++)
+        {
+            det += a.data[0][i] * det_matrix(by_matrix(a, 0, i)) * (i % 2 ? -1 : 1);
         }
         return det;
     }
@@ -156,24 +157,61 @@ Matrix inv_matrix(Matrix a)
     if (a.rows != a.cols)
     {
         printf("Error: The matrix must be a square matrix.\n");
-        return create_matrix(0,0);
+        return create_matrix(0, 0);
     }
     else
     {
-        Matrix c=create_matrix(a.rows,a.cols);
-        for(int i=0;i<a.rows;i++){
-            for(int j=0;j<a.cols;j++){
-                c.data[i][j]=((i+j)%2?-1:1)*det_matrix(by_matrix(a,j,i));
+        Matrix c = create_matrix(a.rows, a.cols);
+        for (int i = 0; i < a.rows; i++)
+        {
+            for (int j = 0; j < a.cols; j++)
+            {
+                c.data[i][j] = ((i + j) % 2 ? -1 : 1) * det_matrix(by_matrix(a, j, i));
             }
         }
-        return scale_matrix(c,1/det_matrix(a));
+        return scale_matrix(c, 1 / det_matrix(a));
+    }
+}
+
+void swap(double *a,double *b){
+    double tmp=0;
+    int len=sizeof(a)/(a[0]);
+    for(int i=0;i<len;i++){
+        tmp=a[i];
+        a[i]=b[i];
+        b[i]=tmp;
     }
 }
 
 int rank_matrix(Matrix a)
 {
-
-    return 0;
+    int rank = a.rows < a.cols ? a.rows : a.cols;
+    for (int i = 0; i < rank; i++)
+    {
+        if (!a.data[i][i])
+        {
+            for (int j = 1; (j + i + 1) < rank; j++)
+            {
+                if (a.data[i + j][i])
+                {
+                    swap(a.data[i],a.data[i+j]);
+                    break;
+                }
+            }
+        }
+    }
+    for (int i = 0; i < a.rows; i++)
+    {
+        if (!a.data[rank - 1][rank - 1])
+        {
+            rank--;
+        }
+        else
+        {
+            break;
+        }
+    }
+    return rank;
 }
 
 double trace_matrix(Matrix a)

@@ -99,4 +99,11 @@ void print_matrix(Matrix a);
 */
 Matrix by_matrix(Matrix a,int i,int j);
 
+/**
+ * @brief 数组互换
+ * @param a 需要互换的第一个数字的地址
+ * @param b 需要互换的第二个数字的地址
+*/
+void swap_arr(double *a,double *b);
+
 #endif
