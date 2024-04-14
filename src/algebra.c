@@ -67,7 +67,7 @@ Matrix scale_matrix(Matrix a, double k)
     {
         for (int j = 0; j < a.cols; j++)
         {
-            c.data[i][j] *= k;
+            c.data[i][j] = k* a.data[i][j];
         }
     }
     return c;
