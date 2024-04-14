@@ -107,10 +107,47 @@ Matrix transpose_matrix(Matrix a)
     return c;
 }
 
+Matrix by_matrix(Matrix a, int i, int j)
+{
+    Matrix c = create_matrix(a.rows - 1, a.cols - 1);
+    int row,col;
+    row=col=0;
+    for (int m = 0; m < a.rows - 1; m++)
+    {
+        row = (m < i ? m : m + 1);
+        for (int n = 0; n < a.cols - 1; n++)
+        {
+            col = (n < j ? n : n + 1);
+            c.data[m][n] = a.data[row][col];
+        }
+    }
+    return c;
+}
+
 double det_matrix(Matrix a)
 {
     // ToDo
-    return 0;
+    if (a.rows != a.cols)
+    {
+        printf("Error: The matrix must be a square matrix.\n");
+        return 0;
+    }
+    else if (a.rows == 1)
+    {
+        return a.data[0][0];
+    }
+    else if (a.rows == 2)
+    {
+        return a.data[0][0] * a.data[1][1] - a.data[0][1] * a.data[1][0];
+    }
+    else
+    {
+        double det=0;
+        for(int i=0;i<a.rows;i++){
+            det+=a.data[0][i]*det_matrix(by_matrix(a,0,i))*(i%2?-1:1);
+        }
+        return det;
+    }
 }
 
 Matrix inv_matrix(Matrix a)

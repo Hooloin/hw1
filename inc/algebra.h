@@ -90,4 +90,13 @@ double trace_matrix(Matrix a);
 */
 void print_matrix(Matrix a);
 
+/**
+ * @brief 生成子矩阵
+ * @param a 矩阵a
+ * @param i 子矩阵需删去的行数
+ * @param j 子矩阵需山区的列数
+ * @return 返回生成的子矩阵
+*/
+Matrix by_matrix(Matrix a,int i,int j);
+
 #endif
