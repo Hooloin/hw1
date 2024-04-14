@@ -56,7 +56,27 @@ Matrix sub_matrix(Matrix a, Matrix b)
 Matrix mul_matrix(Matrix a, Matrix b)
 {
     // ToDo
-    return create_matrix(0, 0);
+    if (a.cols != b.rows)
+    {
+        printf("Error: The number of cols of matrix a must be equal to the number of rows of matrix b.\n");
+        return create_matrix(0, 0);
+    }
+    else
+    {
+        Matrix c = create_matrix(a.rows, b.cols);
+        for (int i = 0; i < a.rows; i++)
+        {
+            for (int j = 0; j < b.cols; j++)
+            {
+                c.data[i][j] = 0;
+                for (int k = 0; k < a.cols; k++)
+                {
+                    c.data[i][j] += a.data[i][k] * b.data[k][j];
+                }
+            }
+        }
+        return c;
+    }
 }
 
 Matrix scale_matrix(Matrix a, double k)
@@ -67,7 +87,7 @@ Matrix scale_matrix(Matrix a, double k)
     {
         for (int j = 0; j < a.cols; j++)
         {
-            c.data[i][j] = k* a.data[i][j];
+            c.data[i][j] = k * a.data[i][j];
         }
     }
     return c;
@@ -76,12 +96,12 @@ Matrix scale_matrix(Matrix a, double k)
 Matrix transpose_matrix(Matrix a)
 {
     // ToDo
-    Matrix c=create_matrix(a.cols,c.rows);
+    Matrix c = create_matrix(a.cols, a.rows);
     for (int i = 0; i < a.rows; i++)
     {
         for (int j = 0; j < a.cols; j++)
         {
-            c.data[i][j] = c.data[j][i];
+            c.data[j][i] = a.data[i][j];
         }
     }
     return c;
@@ -101,14 +121,28 @@ Matrix inv_matrix(Matrix a)
 
 int rank_matrix(Matrix a)
 {
-    // ToDo
+
     return 0;
 }
 
 double trace_matrix(Matrix a)
 {
     // ToDo
-    return 0;
+    if (a.rows != a.cols)
+    {
+        printf("Error: The matrix must be a square matrix.\n");
+        return 0;
+    }
+    else
+    {
+        double sum = 0.0;
+        for (int i = 0; i < a.rows; i++)
+        {
+
+            sum += a.data[i][i];
+        }
+        return sum;
+    }
 }
 
 void print_matrix(Matrix a)
