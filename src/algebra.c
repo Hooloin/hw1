@@ -13,7 +13,7 @@ Matrix create_matrix(int row, int col)
 Matrix add_matrix(Matrix a, Matrix b)
 {
     // ToDo
-    if (!((a.rows & b.rows) && (a.cols & b.cols)))
+    if ((a.rows != b.rows) || (a.cols != b.cols))
     {
         printf("Error: Matrix a and b must have the same rows and cols.\n");
         return create_matrix(0, 0);
