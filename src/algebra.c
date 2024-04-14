@@ -153,7 +153,21 @@ double det_matrix(Matrix a)
 Matrix inv_matrix(Matrix a)
 {
     // ToDo
-    return create_matrix(0, 0);
+    if (a.rows != a.cols)
+    {
+        printf("Error: The matrix must be a square matrix.\n");
+        return create_matrix(0,0);
+    }
+    else
+    {
+        Matrix c=create_matrix(a.rows,a.cols);
+        for(int i=0;i<a.rows;i++){
+            for(int j=0;j<a.cols;j++){
+                c.data[i][j]=((i+j)%2?-1:1)*det_matrix(by_matrix(a,j,i));
+            }
+        }
+        return scale_matrix(c,1/det_matrix(a));
+    }
 }
 
 int rank_matrix(Matrix a)
