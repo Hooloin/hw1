@@ -159,6 +159,10 @@ Matrix inv_matrix(Matrix a)
         printf("Error: The matrix must be a square matrix.\n");
         return create_matrix(0, 0);
     }
+    if(!det_matrix(a)){
+        printf("Error: The matrix is singular.\n");
+        return create_matrix(0, 0);
+    }
     else
     {
         Matrix c = create_matrix(a.rows, a.cols);
@@ -173,13 +177,15 @@ Matrix inv_matrix(Matrix a)
     }
 }
 
-void swap(double *a,double *b){
-    double tmp=0;
-    int len=sizeof(a)/(a[0]);
-    for(int i=0;i<len;i++){
-        tmp=a[i];
-        a[i]=b[i];
-        b[i]=tmp;
+void swap(double *a, double *b)
+{
+    double tmp = 0;
+    int len = sizeof(a) / (a[0]);
+    for (int i = 0; i < len; i++)
+    {
+        tmp = a[i];
+        a[i] = b[i];
+        b[i] = tmp;
     }
 }
 
@@ -190,21 +196,32 @@ int rank_matrix(Matrix a)
     {
         if (!a.data[i][i])
         {
-            for (int j = 1; (j + i + 1) < rank; j++)
+            for (int j = 1; j + i  < rank; j++)
             {
                 if (a.data[i + j][i])
                 {
-                    swap(a.data[i],a.data[i+j]);
+                    swap(a.data[i], a.data[i + j]);
                     break;
                 }
             }
         }
+        if (a.data[i][i])
+        {
+            for (int j = 1; i + j < a.rows; j++)
+            {
+                for (int k = 1; i + k < a.cols; k++)
+                {
+                    a.data[i + j][i + k] -= a.data[i][i + k] * a.data[i][i] / a.data[i + j][i];
+                }
+            }
+        }
     }
+    rank=0;
     for (int i = 0; i < a.rows; i++)
     {
-        if (!a.data[rank - 1][rank - 1])
+        if (a.data[i][i])
         {
-            rank--;
+            rank++;
         }
         else
         {
