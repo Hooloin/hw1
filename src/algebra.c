@@ -159,7 +159,8 @@ Matrix inv_matrix(Matrix a)
         printf("Error: The matrix must be a square matrix.\n");
         return create_matrix(0, 0);
     }
-    if(!det_matrix(a)){
+    if (!det_matrix(a))
+    {
         printf("Error: The matrix is singular.\n");
         return create_matrix(0, 0);
     }
@@ -177,53 +178,49 @@ Matrix inv_matrix(Matrix a)
     }
 }
 
-void swap(double *a, double *b)
+void swap_row(Matrix *a, int i, int j)
 {
-    double tmp = 0;
-    int len = sizeof(a) / (a[0]);
-    for (int i = 0; i < len; i++)
+    double tmp;
+    for (int k = 0; k < a->cols; k++)
     {
-        tmp = a[i];
-        a[i] = b[i];
-        b[i] = tmp;
+        tmp = a->data[i][k];
+        a->data[i][k] = a->data[j][k];
+        a->data[j][k] = tmp;
     }
 }
 
 int rank_matrix(Matrix a)
 {
-    int rank = a.rows < a.cols ? a.rows : a.cols;
+    int rank = (a.rows < a.cols ? a.rows : a.cols);
     for (int i = 0; i < rank; i++)
     {
-        if (!a.data[i][i])
+        if (a.data[i][i] == 0)
         {
-            for (int j = 1; j + i  < rank; j++)
+            for (int j = 1; j + i < a.rows; j++)
             {
-                if (a.data[i + j][i])
+                if (a.data[i + j][i] != 0)
                 {
-                    swap(a.data[i], a.data[i + j]);
+                    swap_row(&a, i, i + j);
                     break;
                 }
             }
         }
-        if (a.data[i][i])
+        if (a.data[i][i] != 0)
         {
-            for (int j = 1; i + j < a.rows; j++)
+            for (int j = i + 1; j < a.rows; j++)
             {
-                for (int k = 1; i + k < a.cols; k++)
+                double mul=a.data[j][i]/a.data[i][i];
+                for (int k = i; k < a.cols; k++)
                 {
-                    a.data[i + j][i + k] -= a.data[i][i + k] * a.data[i][i] / a.data[i + j][i];
+                    a.data[j][k] -= a.data[i][k] * mul;
                 }
             }
         }
     }
-    rank=0;
-    for (int i = 0; i < a.rows; i++)
+    //print_matrix(a);
+    for (rank = 0; rank < a.rows && rank < a.cols; rank++)
     {
-        if (a.data[i][i])
-        {
-            rank++;
-        }
-        else
+        if (a.data[rank][rank] == 0)
         {
             break;
         }

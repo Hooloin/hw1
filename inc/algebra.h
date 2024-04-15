@@ -104,6 +104,6 @@ Matrix by_matrix(Matrix a,int i,int j);
  * @param a 需要互换的第一个数字的地址
  * @param b 需要互换的第二个数字的地址
 */
-void swap_arr(double *a,double *b);
+void swap_row(Matrix *a,int i,int j);
 
 #endif
